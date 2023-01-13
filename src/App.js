@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, userCallback} from 'react';
 import { InputText } from 'primereact/inputtext';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+import { useDropzone } from 'react-dropzone';
 
 const UserProfiles=()=>{
   const fetchUserPfroile=()=>{
-    axios.get('http://localhost:8080/api/asset/get-object?key=').then(res=>{
+    axios.get('http://localhost:8080/api/cursos').then(res=>{
       console.log(res)
     });
   }
@@ -16,6 +17,11 @@ const UserProfiles=()=>{
   }, []);
   return <h1>Hello</h1>;
 };
+
+
+
+
+
 
 function App() {
 
@@ -28,6 +34,7 @@ function App() {
 
   const guardarClick=()=>{
     console.log("Esta es mi estado:",nombre);
+    axios.post('http://localhost:8080/api/assets/upload?file')
   };
 
 

@@ -1,7 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { InputText } from 'primereact/inputtext';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+
+const UserProfiles=()=>{
+  const fetchUserPfroile=()=>{
+    axios.get('http://localhost:8080/api/asset/get-object?key=').then(res=>{
+      console.log(res)
+    });
+  }
+
+  useEffect(()=>{
+    fetchUserPfroile();
+  }, []);
+  return <h1>Hello</h1>;
+};
 
 function App() {
 
@@ -29,6 +43,9 @@ function App() {
       <InputText id="nombre" name="nombre" value={nombre} onChange={cambiarNombre}></InputText>
       <button onClick={guardarClick}>Guardar</button>
       <input type="file" id="subir"  name="PDF"></input>
+
+      <UserProfiles/>
+
     </div>
   );
 }

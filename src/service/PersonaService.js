@@ -5,4 +5,6 @@ export class PersonaService{
     getAll(){
         return axios.get('')
     }
+
+    
 }

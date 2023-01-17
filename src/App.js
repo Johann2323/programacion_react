@@ -104,7 +104,7 @@ function App() {
       <header>
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <h1 >Libros</h1>
+      <h1 >Inventario de Libros</h1>
       <br></br><br></br>
       
       <label>Titulo del Libro:</label>&nbsp;&nbsp;&nbsp;
@@ -128,7 +128,6 @@ function App() {
       <input type="file" id="subir" name="PDF" onChange={(e) => subirArchivos(e.target.files)} /><br></br>
       <br></br><br></br>
       <Button variant="success" onClick={() => insertarArchivos()}>Agregar Libro</Button>{' '}
-      <br></br><br></br>
       <Button variant="success" onClick={(e) => registrar(e)}>Guardar Libro</Button>{' '}
       <br></br><br></br>
       <img src="https://cdn-icons-png.flaticon.com/512/3143/3143460.png" width={200} height={200}></img>

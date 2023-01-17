@@ -1,14 +1,20 @@
-import React, { useState, useEffect, userCallback } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import logo from './logo.svg';
 import './App.css';
+
+
 import axios from 'axios';
 
 
 
 
 function App() {
+
+  const [showConfirm, setShowConfirm] = useState(false);
+
+
 
   const [libro, setlibro] = useState({
     titulo: "",
@@ -20,23 +26,20 @@ function App() {
   const { titulo, autor, descripcion, imagenPhat} = libro;
   
   const onInputChange = (e) => {
-
-   
     setlibro({ ...libro, [e.target.name]: e.target.value });
-    console.log(e.target.name)
-    
-
-    
   };
   
   
   const registrar = async (e) => {
-      
+    console.log("Holaaaa "+e);
+    const f = new FormData();
   
     if (window.confirm('¿Toda la informacion esta correcta quiere subir un nuevo libro?')) {
       e.preventDefault();
+
   
       await axios.post("http://localhost:8080/api/cursos", libro)
+      
 
         .then(response => {
           console.log(response);
@@ -81,12 +84,14 @@ function App() {
 
     }
 
-    console.log("Aqui " + f)
+    
     await axios.post("http://localhost:8080/api/assets/upload", f, { headers: { 'Content-Type': 'multipart/form-data' } })
 
       .then(response => {
         console.log(response.data);
-        console.log(f)
+        console.log(response.data.key)
+        libro.imagenPhat = response.data.key
+        
       }).catch(error => {
         console.log(error);
       })
@@ -101,22 +106,23 @@ function App() {
       </header>
       <h1 >Libros</h1>
       <br></br><br></br>
+      
       <label>Titulo del Libro:</label>&nbsp;&nbsp;&nbsp;
       <b-field expanded>
-        <input class="input"
-          placeholder="nombre" type="text" onChange={(e) => onInputChange(e)}></input>
+        <input class="input" name='titulo'
+          placeholder="Titulo del libro" type="text" value={titulo}  onChange={(e) => onInputChange(e)}></input>
       </b-field><br></br><br></br>
 
       <label>Autor:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <b-field expanded>
-        <input class="input"
-          placeholder="apellido" type="text" onChange={(e) => onInputChange(e)}></input>
+        <input class="input" name='autor'
+          placeholder="Nombre del autor" type="text" value={autor} onChange={(e) => onInputChange(e)}></input>
       </b-field><br></br><br></br>
 
       <label>Descripción:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <b-field expanded>
-        <input class="input"
-          placeholder="descripcion" type="text" onChange={(e) => onInputChange(e)}></input>
+        <input class="input" name='descripcion'
+          placeholder="Descripcion corta" type="text" value={descripcion}   onChange={(e) => onInputChange(e)}></input>
       </b-field><br></br><br></br>
 
       <input type="file" id="subir" name="PDF" onChange={(e) => subirArchivos(e.target.files)} /><br></br>

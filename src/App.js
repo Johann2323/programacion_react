@@ -5,66 +5,54 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
-const UserProfiles = () => {
-  const fetchUserPfroile = () => {
-    axios.get('http://localhost:8080/api/cursos').then(res => {
-      console.log(res)
-    });
-  }
-
-  useEffect(() => {
-    fetchUserPfroile();
-  }, []);
-  return <h1>Hello</h1>;
-};
-
-/*CanvasCaptureMediaStreamTrackrchivo(event: any): any {
-  const archivocapturado = event.target.files[0]
- // this.extraerBase64(archivocapturado).then((image: any) => {
-
-   // console.log(image)
- // })
 
 
-}*/
-
-/*
-class FileInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.fileInput = React.createRef();
-  }
-  handleSubmit(event) {
-    event.preventDefault();
-    alert(
-      `Selected file - ${this.fileInput.current.files[0].name}`
-    );
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Upload file:
-          <input type="file" ref={this.fileInput} />
-        </label>
-        <br />
-        <button type="submit">Submit</button>
-      </form>
-    );
-  }
-}
-
-const root = ReactDOM.createRoot(
-  document.getElementById('root')
-);
-root.render(<FileInput />);
-*/
 
 function App() {
 
-  const [nombre, setNombre] = useState("Codigo");
+  const [libro, setlibro] = useState({
+    titulo: "",
+    autor: "",
+    descripcion: "",
+    imagenPhat: "",
+  })
+  
+  const { titulo, autor, descripcion, imagenPhat} = libro;
+  
+  const onInputChange = (e) => {
+
+   
+    setlibro({ ...libro, [e.target.name]: e.target.value });
+    console.log(e.target.name)
+    
+
+    
+  };
+  
+  
+  const registrar = async (e) => {
+      
+  
+    if (window.confirm('¿Toda la informacion esta correcta quiere subir un nuevo libro?')) {
+      e.preventDefault();
+  
+      await axios.post("http://localhost:8080/api/cursos", libro)
+
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      
+    } else {
+      console.log(libro)
+    }
+  
+  }
+  
+
+ /* const [nombre, setNombre] = useState("Codigo");
   const cambiarNombre = (e) => {
     const value = e.target.value
     console.log(value)
@@ -76,7 +64,7 @@ function App() {
   const guardarClick = () => {
     console.log("Esta es mi estado:", nombre);
     axios.post('http://localhost:8080/api/assets/upload?file')
-  };
+  };*/
 
   const [archivos, setArchivos] = useState(null)
   const subirArchivos = e => {
@@ -116,24 +104,26 @@ function App() {
       <label>Titulo del Libro:</label>&nbsp;&nbsp;&nbsp;
       <b-field expanded>
         <input class="input"
-          placeholder="Nombre" type="text" />
+          placeholder="nombre" type="text" onChange={(e) => onInputChange(e)}></input>
       </b-field><br></br><br></br>
 
       <label>Autor:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <b-field expanded>
         <input class="input"
-          placeholder="Nombre" type="text" />
+          placeholder="apellido" type="text" onChange={(e) => onInputChange(e)}></input>
       </b-field><br></br><br></br>
 
       <label>Descripción:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <b-field expanded>
         <input class="input"
-          placeholder="Nombre" type="text" />
+          placeholder="descripcion" type="text" onChange={(e) => onInputChange(e)}></input>
       </b-field><br></br><br></br>
 
       <input type="file" id="subir" name="PDF" onChange={(e) => subirArchivos(e.target.files)} /><br></br>
       <br></br><br></br>
-      <Button variant="success" onClick={() => insertarArchivos()}>Guardar Libro</Button>{' '}
+      <Button variant="success" onClick={() => insertarArchivos()}>Agregar Libro</Button>{' '}
+      <br></br><br></br>
+      <Button variant="success" onClick={(e) => registrar(e)}>Guardar Libro</Button>{' '}
       <br></br><br></br>
       <img src="https://cdn-icons-png.flaticon.com/512/3143/3143460.png" width={200} height={200}></img>
 

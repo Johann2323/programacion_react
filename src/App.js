@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import logo from './logo.svg';
@@ -31,9 +31,8 @@ function App() {
   
   
   const registrar = async (e) => {
-    console.log("Holaaaa "+e);
-    const f = new FormData();
-  
+    
+
     if (window.confirm('¿Toda la informacion esta correcta quiere subir un nuevo libro?')) {
       e.preventDefault();
 
@@ -43,6 +42,7 @@ function App() {
 
         .then(response => {
           console.log(response);
+          window.location.reload()
         })
         .catch(error => {
           console.log(error);
@@ -96,6 +96,25 @@ function App() {
         console.log(error);
       })
   }
+
+
+
+  //tabla
+  const [users, setUsers] = useState([])
+
+    useEffect(() => {
+        loadUsers();
+    }, [])
+
+    const loadUsers = async () => {
+        const result = await axios.get("http://localhost:8080/api/cursos");
+        console.log("F")
+        setUsers(result.data);
+    };
+
+
+
+
   return (
 
     <div className="App" style={{
@@ -132,8 +151,43 @@ function App() {
       <br></br><br></br>
       <img src="https://cdn-icons-png.flaticon.com/512/3143/3143460.png" width={200} height={200}></img>
 
+      <hr></hr>
+
+
+
+     
+      <table className="table border shadow">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Autor</th>
+                            <th scope="col">Descripcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            users.map((libro, index) => (
+                                <tr>
+                                    <th scope="row" key={index}>{index + 1}</th>
+                                    <td>{libro.titulo}</td>
+                                    <td>{libro.autor}</td>
+                                    <td>{libro.descripcion}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+                <hr></hr>
+
     </div>
+
+    
   );
+
+
+
+  
 }
 
 export default App;
